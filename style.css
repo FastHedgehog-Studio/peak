@@ -1,3 +1,17 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+.property-icons span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.property-icons .icon {
+  font-family: "Material Icons";
+  font-size: 20px;
+  color: #555;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -66,66 +80,96 @@ body {
   height: 250px;
 }
 
+/* Properties Table Container */
 .properties-table {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 20px;
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 15px; /* Add spacing between rows for card-like effect */
 }
 
+/* Table Row Styling */
 .property-row {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  gap: 20px;
-  background-color: white;
-  border-radius: 8px;
+  display: table-row;
+  background-color: #fff;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
 }
 
-.property-row:hover {
-  background-color: #f4f8ff;
-  cursor: pointer;
+/* Table Cell Styling */
+.property-row > div {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 10px 20px;
 }
 
+/* Property Image */
 .property-image {
-  width: 120px;
+  width: 100px;
   height: 100px;
   border-radius: 8px;
   object-fit: cover;
 }
 
+/* Property Details */
 .property-details {
-  flex-grow: 1;
+  font-size: 14px;
 }
 
 .property-name {
   font-size: 18px;
   font-weight: bold;
-  margin: 0 0 5px;
-}
-
-.property-address {
-  font-size: 14px;
-  color: #666;
   margin: 0;
 }
 
-.property-icons {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.property-address {
+  margin: 5px 0;
+  color: #666;
   font-size: 14px;
-  color: #333;
 }
 
-.property-icon {
+/* Metrics Styling */
+.property-metrics {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.metric-item {
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Icons Styling */
+.property-icons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.property-icons .icon {
+  font-family: "Material Icons";
+  font-size: 20px;
+  color: #555;
+}
+
+.property-icons span {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.property-icon img {
-  width: 20px;
-  height: 20px;
+/* Table Header Row */
+.table-header {
+  display: table-row;
+  background-color: #f5f5f5;
+  font-weight: bold;
+  color: #333;
+}
+
+.table-header > div {
+  padding: 10px 20px;
+  text-align: left;
 }

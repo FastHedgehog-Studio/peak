@@ -1,61 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Populate Properties Table
-  const propertiesTable = document.getElementById("propertiesTable");
-  properties.propertyGroup.properties.forEach((property) => {
-    const row = document.createElement("div");
-    row.className = "property-row";
-
-    const image = document.createElement("img");
-    image.src = property.imageUrl || "https://via.placeholder.com/120x100";
-    image.alt = property.name;
-    image.className = "property-image";
-
-    const details = document.createElement("div");
-    details.className = "property-details";
-    details.innerHTML = `
-      <p class="property-name">${property.name}</p>
-      <p class="property-address">${property.address}</p>
-      <p>${property.type}</p>
-    `;
-
-    const icons = document.createElement("div");
-    icons.className = "property-icons";
-    icons.innerHTML = `
-      <span class="property-icon">
-        <img src="https://via.placeholder.com/20" alt="Bedrooms"> ${property.bedrooms || "N/A"}
-      </span>
-      <span class="property-icon">
-        <img src="https://via.placeholder.com/20" alt="Beds"> ${property.beds || "N/A"}
-      </span>
-    `;
-
-    row.appendChild(image);
-    row.appendChild(details);
-    row.appendChild(icons);
-
-    propertiesTable.appendChild(row);
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Ensure properties.js is loaded
   if (!properties || !properties.propertyGroup) {
     console.error("Properties data is not available!");
     return;
   }
 
-  // Render Charts
+  const propertyGroup = properties.propertyGroup;
+
+  let selectedTimeFrame = "monthly"; // Default time frame
+
+  // Populate Group-Level Metrics into Charts
   const revenueChart = new Chart(document.getElementById("revenueChart"), {
     type: "bar",
     data: {
       labels: ["Jan", "Feb", "Mar", "Apr", "May"],
       datasets: [
         {
-          label: "Revenue",
-          data: [2500, 3000, 2800, 3200, 4000], // Example data
+          label: "Total Revenue",
+          data: propertyGroup.metrics.revenue[selectedTimeFrame],
           backgroundColor: "#4caf50",
         },
       ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, position: "top" },
+      },
     },
   });
 
@@ -65,10 +35,16 @@ document.addEventListener("DOMContentLoaded", () => {
       labels: ["Cleaning", "Electricity", "Maintenance", "Other"],
       datasets: [
         {
-          data: [500, 800, 600, 300], // Example data
+          data: propertyGroup.metrics.cost[selectedTimeFrame], // Example split for the first 4 cost categories
           backgroundColor: ["#4caf50", "#2196f3", "#ff9800", "#f44336"],
         },
       ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, position: "top" },
+      },
     },
   });
 
@@ -78,12 +54,19 @@ document.addEventListener("DOMContentLoaded", () => {
       labels: ["Jan", "Feb", "Mar", "Apr", "May"],
       datasets: [
         {
-          label: "Net Income",
-          data: [1500, 1800, 2100, 2500, 3000], // Example data
+          label: "Total Net Income",
+          data: propertyGroup.metrics.netIncome[selectedTimeFrame],
           borderColor: "#2196f3",
-          fill: false,
+          backgroundColor: "rgba(33, 150, 243, 0.2)",
+          fill: true,
         },
       ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, position: "top" },
+      },
     },
   });
 
@@ -93,12 +76,84 @@ document.addEventListener("DOMContentLoaded", () => {
       labels: ["Jan", "Feb", "Mar", "Apr", "May"],
       datasets: [
         {
-          label: "Occupancy",
-          data: [80, 85, 90, 88, 87], // Example data
+          label: "Average Occupancy (%)",
+          data: propertyGroup.metrics.occupancy[selectedTimeFrame],
           borderColor: "#ff9800",
-          fill: false,
+          backgroundColor: "rgba(255, 152, 0, 0.2)",
+          fill: true,
         },
       ],
     },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, position: "top" },
+      },
+    },
   });
+
+  // Function to populate Properties Table
+  function populatePropertiesTable() {
+    const propertiesTable = document.getElementById("propertiesTable");
+    propertiesTable.innerHTML = ""; // Clear existing table rows
+
+    // Add table header
+    const headerRow = document.createElement("div");
+    headerRow.className = "table-header";
+    headerRow.innerHTML = `
+      <div>Property</div>
+      <div>Metrics</div>
+      <div>Icons</div>
+    `;
+    propertiesTable.appendChild(headerRow);
+
+    // Add property rows
+    propertyGroup.properties.forEach((property) => {
+      const row = document.createElement("div");
+      row.className = "property-row";
+
+      const image = document.createElement("div");
+      image.innerHTML = `<img class="property-image" src="${property.imageUrl || "https://via.placeholder.com/120x100"}" alt="${property.name}">`;
+
+      const details = document.createElement("div");
+      details.className = "property-details";
+      details.innerHTML = `
+        <p class="property-name">${property.name}</p>
+        <p class="property-address">${property.address}</p>
+        <p>${property.type}</p>
+      `;
+
+      const metrics = document.createElement("div");
+      metrics.className = "property-metrics";
+      metrics.innerHTML = `
+        <div class="metric-item">${property.metrics.occupancy[selectedTimeFrame][0]}%<br><small>Occupancy</small></div>
+        <div class="metric-item">$${property.metrics.revenue[selectedTimeFrame][0]}<br><small>Revenue</small></div>
+        <div class="metric-item">$${property.metrics.cost[selectedTimeFrame][0]}<br><small>Cost</small></div>
+        <div class="metric-item">$${property.metrics.netIncome[selectedTimeFrame][0]}<br><small>Net Income</small></div>
+      `;
+
+      const icons = document.createElement("div");
+      icons.className = "property-icons";
+      icons.innerHTML = `
+        <span><span class="icon material-icons">bed</span> ${property.bedrooms || "N/A"}</span>
+        <span><span class="icon material-icons">king_bed</span> ${property.beds || "N/A"}</span>
+      `;
+
+      row.appendChild(image);
+      row.appendChild(details);
+      row.appendChild(metrics);
+      row.appendChild(icons);
+
+      propertiesTable.appendChild(row);
+    });
+  }
+  // Handle Time Frame Dropdown Change
+  const timeFrameDropdown = document.getElementById("timeFrameDropdown");
+  timeFrameDropdown.addEventListener("change", (event) => {
+    selectedTimeFrame = event.target.value;
+    populatePropertiesTable(); // Re-render table rows
+  });
+
+  // Initial Render of Properties Table
+  populatePropertiesTable();
 });
