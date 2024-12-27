@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LiveOps - Peak Accommodation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="properties.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f5f7;
+        color: #333;
+      }
+      .container {
+        width: 90%;
+        margin: 20px auto;
+      }
+      .header {
+        background-color: #0056b3;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 32px;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .card {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+      .card h3 {
+        margin: 0;
+        font-size: 24px;
+        text-align: left;
+      }
+      .dropdown {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        height: 250px;
+        margin-top: 20px;
+      }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      .table th,
+      .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      .table th {
+        background-color: #f4f5f7;
+      }
+      .property-row {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        gap: 15px;
+      }
+      .property-image {
+        width: 100px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+      .property-icons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .property-icons span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .footer {
+        text-align: center;
+        padding: 10px;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header Section -->
+      <div class="header">
+        <div>
+          <h1>LiveOps</h1>
+          <p>Peak Accommodation Dashboard</p>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <!-- Revenue Chart -->
+        <div class="card">
+          <h3>Revenue</h3>
+          <select class="dropdown" id="revenueDropdown">
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="annually">Annually</option>
+            <option value="custom">Custom</option>
+          </select>
+          <div class="chart-container">
+            <canvas id="revenueChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Cost Chart -->
+        <div class="card">
+          <h3>Cost Breakdown</h3>
+          <select class="dropdown" id="costDropdown">
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="annually">Annually</option>
+            <option value="custom">Custom</option>
+          </select>
+          <div class="chart-container">
+            <canvas id="costChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Net Income -->
+        <div class="card">
+          <h3>Net Income</h3>
+          <select class="dropdown" id="netIncomeDropdown">
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="annually">Annually</option>
+            <option value="custom">Custom</option>
+          </select>
+          <div class="chart-container">
+            <canvas id="netIncomeChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Occupancy Chart -->
+        <div class="card">
+          <h3>Occupancy</h3>
+          <select class="dropdown" id="occupancyDropdown">
+            <option value="percentage">Percentage</option>
+            <option value="actual">Actual Nights</option>
+          </select>
+          <div class="chart-container">
+            <canvas id="occupancyChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Properties Table -->
+      <div>
+        <h3>Properties Overview</h3>
+        <div id="propertiesTable"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>© 2024 LiveOps - Peak Accommodation</p>
+    </div>
+
+    <script>
+      // Populate Properties Table
+      const propertiesTable = document.getElementById("propertiesTable");
+      properties.propertyGroup.properties.forEach((property) => {
+        const row = document.createElement("div");
+        row.className = "property-row";
+
+        const image = document.createElement("img");
+        image.src = property.imageUrl || "https://via.placeholder.com/100x80";
+        image.alt = property.name;
+        image.className = "property-image";
+
+        const details = document.createElement("div");
+        details.innerHTML = `
+        <strong>${property.name}</strong><br>
+        ${property.address}<br>
+        ${property.type}
+      `;
+
+        const icons = document.createElement("div");
+        icons.className = "property-icons";
+        icons.innerHTML = `
+        <span><img src="https://via.placeholder.com/16" alt="bedrooms"> ${property.bedrooms}</span>
+        <span><img src="https://via.placeholder.com/16" alt="beds"> ${property.beds}</span>
+      `;
+
+        row.appendChild(image);
+        row.appendChild(details);
+        row.appendChild(icons);
+
+        propertiesTable.appendChild(row);
+      });
+
+      // Render Charts
+      const revenueChart = new Chart(document.getElementById("revenueChart"), {
+        type: "bar",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+          datasets: [
+            {
+              label: "Revenue",
+              data: properties.propertyGroup.properties.map((p) => p.units * 1000),
+              backgroundColor: "#4caf50",
+            },
+          ],
+        },
+      });
+
+      const costChart = new Chart(document.getElementById("costChart"), {
+        type: "pie",
+        data: {
+          labels: ["Cleaning", "Electricity", "Maintenance", "Other"],
+          datasets: [
+            {
+              data: [500, 800, 600, 300],
+              backgroundColor: ["#4caf50", "#2196f3", "#ff9800", "#f44336"],
+            },
+          ],
+        },
+      });
+
+      const netIncomeChart = new Chart(document.getElementById("netIncomeChart"), {
+        type: "line",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+          datasets: [
+            {
+              label: "Net Income",
+              data: [1500, 1800, 2100, 2500, 3000],
+              borderColor: "#2196f3",
+              fill: false,
+            },
+          ],
+        },
+      });
+
+      const occupancyChart = new Chart(document.getElementById("occupancyChart"), {
+        type: "line",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+          datasets: [
+            {
+              label: "Occupancy",
+              data: [80, 85, 90, 88, 87],
+              borderColor: "#ff9800",
+              fill: false,
+            },
+          ],
+        },
+      });
+    </script>
+  </body>
+</html>
