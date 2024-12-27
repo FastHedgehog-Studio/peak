@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LiveOps - Peak Accommodation</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="properties.js" defer></script>
+    <script src="code.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header Section -->
+      <div class="header">
+        <div>
+          <h1>LiveOps</h1>
+          <p>Peak Accommodation Dashboard</p>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="card">
+          <h3>Revenue</h3>
+          <select class="dropdown">
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="annually">Annually</option>
+            <option value="custom">Custom</option>
+          </select>
+          <div class="chart-container">
+            <canvas id="revenueChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Cost Breakdown</h3>
+          <select class="dropdown">
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="annually">Annually</option>
+            <option value="custom">Custom</option>
+          </select>
+          <div class="chart-container">
+            <canvas id="costChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Net Income</h3>
+          <select class="dropdown">
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="annually">Annually</option>
+            <option value="custom">Custom</option>
+          </select>
+          <div class="chart-container">
+            <canvas id="netIncomeChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Occupancy</h3>
+          <select class="dropdown">
+            <option value="percentage">Percentage</option>
+            <option value="actual">Actual Nights</option>
+          </select>
+          <div class="chart-container">
+            <canvas id="occupancyChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Properties Table -->
+      <div>
+        <h3>Properties Overview</h3>
+        <div id="propertiesTable" class="properties-table"></div>
+      </div>
+    </div>
+  </body>
+</html>
