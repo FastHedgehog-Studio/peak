@@ -92,18 +92,41 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
+  // Function to render mini charts
+  function renderMiniChart(canvas, data) {
+    new Chart(canvas, {
+      type: "bar",
+      data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May"], // Example labels
+        datasets: [
+          {
+            data: data,
+            backgroundColor: "#9fa8da",
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { x: { display: false }, y: { display: false } },
+      },
+    });
+  }
+
   // Function to populate Properties Table
   function populatePropertiesTable() {
     const propertiesTable = document.getElementById("propertiesTable");
-    propertiesTable.innerHTML = ""; // Clear existing table rows
+    propertiesTable.innerHTML = ""; // Clear existing rows
 
     // Add table header
     const headerRow = document.createElement("div");
     headerRow.className = "table-header";
     headerRow.innerHTML = `
-      <div>Property</div>
-      <div>Metrics</div>
-      <div>Icons</div>
+      <div>Properties</div>
+      <div>Occupancy</div>
+      <div>Revenue</div>
+      <div>Cost</div>
+      <div>Net</div>
     `;
     propertiesTable.appendChild(headerRow);
 
@@ -112,41 +135,70 @@ document.addEventListener("DOMContentLoaded", () => {
       const row = document.createElement("div");
       row.className = "property-row";
 
-      const image = document.createElement("div");
-      image.innerHTML = `<img class="property-image" src="${property.imageUrl || "https://via.placeholder.com/120x100"}" alt="${property.name}">`;
-
+      // Property Details Section
       const details = document.createElement("div");
       details.className = "property-details";
       details.innerHTML = `
-        <p class="property-name">${property.name}</p>
-        <p class="property-address">${property.address}</p>
-        <p>${property.type}</p>
+        <img class="property-image" src="${property.imageUrl || "https://via.placeholder.com/120x100"}" alt="${property.name}">
+        <div>
+          <p class="property-name">${property.name}</p>
+          <p class="property-address">${property.address}</p>
+          <p>${property.type}</p>
+          <div class="property-icons">
+            <span><span class="icon material-icons">bed</span> ${property.bedrooms || "N/A"}</span>
+            <span><span class="icon material-icons">bathtub</span> ${property.bathrooms || "N/A"}</span>
+            <span><span class="icon material-icons">group</span> ${property.sleeps || "N/A"}</span>
+          </div>
+        </div>
       `;
 
-      const metrics = document.createElement("div");
-      metrics.className = "property-metrics";
-      metrics.innerHTML = `
-        <div class="metric-item">${property.metrics.occupancy[selectedTimeFrame][0]}%<br><small>Occupancy</small></div>
-        <div class="metric-item">$${property.metrics.revenue[selectedTimeFrame][0]}<br><small>Revenue</small></div>
-        <div class="metric-item">$${property.metrics.cost[selectedTimeFrame][0]}<br><small>Cost</small></div>
-        <div class="metric-item">$${property.metrics.netIncome[selectedTimeFrame][0]}<br><small>Net Income</small></div>
+      // Metrics Section
+      const occupancy = document.createElement("div");
+      occupancy.className = "property-metrics";
+      occupancy.innerHTML = `
+        <div>${property.metrics.occupancy[selectedTimeFrame][0]}% (${property.metrics.occupancy[selectedTimeFrame][1]})</div>
+        <canvas class="mini-chart"></canvas>
       `;
 
-      const icons = document.createElement("div");
-      icons.className = "property-icons";
-      icons.innerHTML = `
-        <span><span class="icon material-icons">bed</span> ${property.bedrooms || "N/A"}</span>
-        <span><span class="icon material-icons">king_bed</span> ${property.beds || "N/A"}</span>
+      const revenue = document.createElement("div");
+      revenue.className = "property-metrics";
+      revenue.innerHTML = `
+        <div>$${property.metrics.revenue[selectedTimeFrame][0]}</div>
+        <canvas class="mini-chart"></canvas>
       `;
 
-      row.appendChild(image);
+      const cost = document.createElement("div");
+      cost.className = "property-metrics";
+      cost.innerHTML = `
+        <div>$${property.metrics.cost[selectedTimeFrame][0]}</div>
+        <canvas class="mini-chart"></canvas>
+      `;
+
+      const netIncome = document.createElement("div");
+      netIncome.className = "property-metrics";
+      netIncome.innerHTML = `
+        <div>$${property.metrics.netIncome[selectedTimeFrame][0]}</div>
+        <canvas class="mini-chart"></canvas>
+      `;
+
+      // Append sections to row
       row.appendChild(details);
-      row.appendChild(metrics);
-      row.appendChild(icons);
+      row.appendChild(occupancy);
+      row.appendChild(revenue);
+      row.appendChild(cost);
+      row.appendChild(netIncome);
 
+      // Append row to table
       propertiesTable.appendChild(row);
+
+      // Render mini charts
+      renderMiniChart(occupancy.querySelector(".mini-chart"), property.metrics.occupancy[selectedTimeFrame]);
+      renderMiniChart(revenue.querySelector(".mini-chart"), property.metrics.revenue[selectedTimeFrame]);
+      renderMiniChart(cost.querySelector(".mini-chart"), property.metrics.cost[selectedTimeFrame]);
+      renderMiniChart(netIncome.querySelector(".mini-chart"), property.metrics.netIncome[selectedTimeFrame]);
     });
   }
+
   // Handle Time Frame Dropdown Change
   const timeFrameDropdown = document.getElementById("timeFrameDropdown");
   timeFrameDropdown.addEventListener("change", (event) => {

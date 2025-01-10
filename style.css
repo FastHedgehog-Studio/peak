@@ -1,17 +1,5 @@
+/* General Reset */
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
-
-.property-icons span {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.property-icons .icon {
-  font-family: "Material Icons";
-  font-size: 20px;
-  color: #555;
-}
-
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -20,11 +8,13 @@ body {
   color: #333;
 }
 
+/* Container Layout */
 .container {
   width: 90%;
   margin: 20px auto;
 }
 
+/* Header */
 .header {
   background-color: #0056b3;
   color: white;
@@ -40,6 +30,7 @@ body {
   font-size: 32px;
 }
 
+/* Stats Grid */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -80,41 +71,45 @@ body {
   height: 250px;
 }
 
-/* Properties Table Container */
+/* Properties Table */
 .properties-table {
-  display: table;
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 15px; /* Add spacing between rows for card-like effect */
+  display: grid;
+  gap: 15px;
+  margin-top: 20px;
 }
 
-/* Table Row Styling */
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  padding: 10px 0;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+  font-size: 16px;
+}
+
+/* Property Row */
 .property-row {
-  display: table-row;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  align-items: center;
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-}
-
-/* Table Cell Styling */
-.property-row > div {
-  display: table-cell;
-  vertical-align: middle;
-  padding: 10px 20px;
-}
-
-/* Property Image */
-.property-image {
-  width: 100px;
-  height: 100px;
   border-radius: 8px;
-  object-fit: cover;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
 }
 
 /* Property Details */
 .property-details {
-  font-size: 14px;
+  display: flex;
+  gap: 10px;
+}
+
+.property-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .property-name {
@@ -129,47 +124,49 @@ body {
   font-size: 14px;
 }
 
-/* Metrics Styling */
-.property-metrics {
-  display: flex;
-  gap: 20px;
-  justify-content: flex-start;
-}
-
-.metric-item {
-  font-size: 14px;
-  text-align: center;
-}
-
-/* Icons Styling */
 .property-icons {
   display: flex;
   gap: 10px;
-  align-items: center;
-  justify-content: flex-end;
+  margin-top: 5px;
 }
 
-.property-icons .icon {
+.icon {
   font-family: "Material Icons";
-  font-size: 20px;
+  font-size: 16px;
   color: #555;
 }
 
-.property-icons span {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+/* Metrics and Mini-Charts */
+.property-metrics {
+  text-align: center;
 }
 
-/* Table Header Row */
-.table-header {
-  display: table-row;
-  background-color: #f5f5f5;
+.property-metrics .metric-value {
+  font-size: 32px;
   font-weight: bold;
-  color: #333;
+  margin: 0;
 }
 
-.table-header > div {
-  padding: 10px 20px;
-  text-align: left;
+.property-metrics .metric-label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+/* Mini Charts */
+.mini-chart {
+  width: 100%; /* Take full width of the column */
+  height: 32px; /* Set maximum height */
+  margin-top: 5px;
+}
+
+/* Utilities */
+.metric-value {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #666;
 }

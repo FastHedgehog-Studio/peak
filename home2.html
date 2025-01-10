@@ -13,6 +13,8 @@
     <!-- Load Data and JavaScript -->
     <script src="properties.js" defer></script>
     <script src="code.js" defer></script>
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" />
   </head>
   <body>
     <div class="container">
@@ -28,66 +30,68 @@
       <div class="stats-grid">
         <!-- Revenue Chart -->
         <div class="card">
-          <h3>Revenue</h3>
-          <select class="dropdown">
+          <h2>Revenue</h2>
+          <select class="dropdown" aria-label="Select time frame for Revenue">
             <option value="monthly" selected>Monthly</option>
             <option value="quarterly">Quarterly</option>
             <option value="annually">Annually</option>
           </select>
           <div class="chart-container">
-            <canvas id="revenueChart"></canvas>
+            <canvas id="revenueChart" aria-label="Revenue chart"></canvas>
           </div>
         </div>
 
         <!-- Cost Breakdown Chart -->
         <div class="card">
-          <h3>Cost Breakdown</h3>
-          <select class="dropdown">
+          <h2>Cost Breakdown</h2>
+          <select class="dropdown" aria-label="Select time frame for Cost Breakdown">
             <option value="monthly" selected>Monthly</option>
             <option value="quarterly">Quarterly</option>
             <option value="annually">Annually</option>
           </select>
           <div class="chart-container">
-            <canvas id="costChart"></canvas>
+            <canvas id="costChart" aria-label="Cost breakdown chart"></canvas>
           </div>
         </div>
 
         <!-- Net Income Chart -->
         <div class="card">
-          <h3>Net Income</h3>
-          <select class="dropdown">
+          <h2>Net Income</h2>
+          <select class="dropdown" aria-label="Select time frame for Net Income">
             <option value="monthly" selected>Monthly</option>
             <option value="quarterly">Quarterly</option>
             <option value="annually">Annually</option>
           </select>
           <div class="chart-container">
-            <canvas id="netIncomeChart"></canvas>
+            <canvas id="netIncomeChart" aria-label="Net income chart"></canvas>
           </div>
         </div>
 
         <!-- Occupancy Chart -->
         <div class="card">
-          <h3>Occupancy</h3>
-          <select class="dropdown">
+          <h2>Occupancy</h2>
+          <select class="dropdown" aria-label="Select time frame for Occupancy">
             <option value="percentage" selected>Percentage</option>
             <option value="actual">Actual Nights</option>
           </select>
           <div class="chart-container">
-            <canvas id="occupancyChart"></canvas>
+            <canvas id="occupancyChart" aria-label="Occupancy chart"></canvas>
           </div>
         </div>
       </div>
 
       <!-- Properties Table -->
       <div>
-        <h3>Properties Overview</h3>
+        <h2>Properties Overview</h2>
         <label for="timeFrameDropdown">Select Time Frame:</label>
-        <select id="timeFrameDropdown">
+        <select id="timeFrameDropdown" aria-label="Select time frame for Properties Overview">
           <option value="monthly" selected>Monthly</option>
           <option value="quarterly">Quarterly</option>
           <option value="annually">Annually</option>
         </select>
-        <div id="propertiesTable" class="properties-table"></div>
+        <div id="propertiesTable" class="properties-table">
+          <p id="tablePlaceholder">Loading properties...</p>
+        </div>
       </div>
     </div>
   </body>
